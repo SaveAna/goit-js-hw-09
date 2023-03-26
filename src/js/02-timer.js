@@ -25,7 +25,7 @@ const options = {
 startBtn.addEventListener('click', onClick);
 
 function onClick() {
-  intervalId = setInterval(() => {
+  indervalId = setInterval(() => {
     console.log('1'); //test
   }, 1000);
   startBtn.disabled = true;
