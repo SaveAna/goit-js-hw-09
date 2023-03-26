@@ -30,9 +30,7 @@ const options = {
     }
     refs.startBtn.disabled = false;
     selectedDate = selectedDates[0];
-    deltaTime = selectedDates[0] - startTime;
     console.log(selectedDates[0]);
-    console.log(convertMs(deltaTime)); //check
   },
 };
 
@@ -90,15 +88,6 @@ function convertMs(ms) {
 function addLeadingZero(value) {
   return String(value).padStart(2, '0');
 }
-
-refs.timer.setAttribute(
-  'style',
-  `font-size: 16px;
-  text-transform: uppercase;
-   display: flex;
-     gap: 30px;
-     margin-top: 30px;`
-);
 
 refs.startBtn.disabled = true;
 flatpickr(refs.calendar, options);
