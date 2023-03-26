@@ -6,6 +6,7 @@ const calendar = document.querySelector('#datetime-picker');
 const startBtn = document.querySelector('[data-start]');
 const timer = document.querySelector('.timer');
 const startTime = Date.now();
+const indervalId = null;
 const options = {
   enableTime: true,
   time_24hr: true,
@@ -21,16 +22,14 @@ const options = {
   },
 };
 
-startBtn.disabled = true;
+startBtn.addEventListener('click', onClick);
 
-timer.setAttribute(
-  'style',
-  `font-size: 36px;
-  text-transform: uppercase;
-   display: flex;
-     gap: 30px;
-     margin-top: 30px;`
-);
+function onClick() {
+  intervalId = setInterval(() => {
+    console.log('1'); //test
+  }, 1000);
+  startBtn.disabled = true;
+}
 
 function convertMs(ms) {
   // Number of milliseconds per unit of time
@@ -51,4 +50,14 @@ function convertMs(ms) {
   return { days, hours, minutes, seconds };
 }
 
+timer.setAttribute(
+  'style',
+  `font-size: 36px;
+  text-transform: uppercase;
+   display: flex;
+     gap: 30px;
+     margin-top: 30px;`
+);
+
+startBtn.disabled = true;
 flatpickr(calendar, options);
