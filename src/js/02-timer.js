@@ -6,7 +6,7 @@ const refs = {
   calendar: document.querySelector('#datetime-picker'),
   startBtn: document.querySelector('[data-start]'),
   timer: document.querySelector('.timer'),
-  timerFace: {
+  timerface: {
     days: document.querySelector('[data-days]'),
     hours: document.querySelector('[data-hours]'),
     minutes: document.querySelector('[data-minutes]'),
@@ -16,6 +16,8 @@ const refs = {
 
 const startTime = Date.now();
 let indervalId = null;
+let selectedDate = null;
+let deltaTime = 0;
 
 const options = {
   enableTime: true,
@@ -27,7 +29,10 @@ const options = {
       Notify.failure('Please choose a date in the future');
     }
     refs.startBtn.disabled = false;
+    selectedDate = selectedDates[0];
+    deltaTime = selectedDates[0] - startTime;
     console.log(selectedDates[0]);
+    console.log(convertMs(deltaTime)); //check
   },
 };
 
@@ -35,9 +40,30 @@ refs.startBtn.addEventListener('click', onClick);
 
 function onClick() {
   indervalId = setInterval(() => {
-    console.log('1'); //test
+    const currentTime = Date.now();
+    deltaTime = Math.floor((selectedDate - currentTime) / 1000) * 1000;
+    if (deltaTime <= 0) {
+      clearInterval(indervalId);
+      Notify.info('Time is up!');
+      refs.timerface.days.textContent = '00';
+      refs.timerface.hours.textContent = '00';
+      refs.timerface.minutes.textContent = '00';
+      refs.timerface.seconds.textContent = '00';
+      refs.startBtn.disabled = false;
+    } else {
+      const timerface = convertMs(deltaTime);
+      updateTimer(timerface);
+    }
   }, 1000);
   refs.startBtn.disabled = true;
+}
+
+function updateTimer(timerface) {
+  const { days, hours, minutes, seconds } = timerface;
+  refs.timerface.days.textContent = days;
+  refs.timerface.hours.textContent = hours;
+  refs.timerface.minutes.textContent = minutes;
+  refs.timerface.seconds.textContent = seconds;
 }
 
 function convertMs(ms) {
@@ -48,13 +74,15 @@ function convertMs(ms) {
   const day = hour * 24;
 
   // Remaining days
-  const days = Math.floor(ms / day);
+  const days = addLeadingZero(Math.floor(ms / day));
   // Remaining hours
-  const hours = Math.floor((ms % day) / hour);
+  const hours = addLeadingZero(Math.floor((ms % day) / hour));
   // Remaining minutes
-  const minutes = Math.floor(((ms % day) % hour) / minute);
+  const minutes = addLeadingZero(Math.floor(((ms % day) % hour) / minute));
   // Remaining seconds
-  const seconds = Math.floor((((ms % day) % hour) % minute) / second);
+  const seconds = addLeadingZero(
+    Math.floor((((ms % day) % hour) % minute) / second)
+  );
 
   return { days, hours, minutes, seconds };
 }
