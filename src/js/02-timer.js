@@ -26,11 +26,13 @@ const options = {
   minuteIncrement: 1,
   onClose(selectedDates) {
     if (selectedDates[0] <= startTime) {
+      refs.startBtn.disabled = true;
       Notify.failure('Please choose a date in the future');
+    } else {
+      refs.startBtn.disabled = false;
+      selectedDate = selectedDates[0];
+      console.log(selectedDates[0]);
     }
-    refs.startBtn.disabled = false;
-    selectedDate = selectedDates[0];
-    console.log(selectedDates[0]);
   },
 };
 
